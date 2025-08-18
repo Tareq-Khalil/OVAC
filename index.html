@@ -1,59 +1,724 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>OMC</title>
+    <link rel = "stylesheet" type = "text/css" href = "css/reset.css" />
+    <link rel = "stylesheet" type = "text/css" href = "css/main.css" />
+    <link rel = "stylesheet" type = "text/css" href = "css/nav.css" />
+    <link rel = "stylesheet" type = "text/css" href = "css/footer.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:ital@0;1&display=swap" rel="stylesheet">
+    <!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
+  </head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
 
-<section class="container footer mbm">
-    <div class="footer-logo">OVAC</div>
-    <div class="logo-label">Visual Arts Club at STEM High School for Boys - 6th of October</div>
-  
-    <div class="signup-container">
-    <div class="sign-up">Sign up for more news and oppurtunities.</div>
-    <div class="deets">Receive updates on meeting dates, events and other fun related news and sessions.</div>
-  
-      <!-- Begin Mailchimp Signup Form -->
-      <div id="mc_embed_signup">
-        <form action="" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
-            <div id="mc_embed_signup_scroll">
-        <div class="mc-field-group">
-          <input type="email" value="" name="EMAIL" class="required email mc-email-input" id="mce-EMAIL" placeholder="your-email@gmail.com" >
-        </div>
-          <div id="mce-responses" class="clear">
-            <div class="response" id="mce-error-response" style="display:none"></div>
-            <div class="response" id="mce-success-response" style="display:none"></div>
-          </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-            
-          
-            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_8ed84f128f439d4ab46e02db7_e367bf5ac6" tabindex="-1" value=""></div>
-            <div class="clear"><input type="submit" value="→" name="subscribe" id="mc-embedded-subscribe" class="button" ></div><br><br>
-          </div>
-          <h3 style="font-family: terminal-grotesque-open, sans-serif">Webmaster: Tareq Khalil</h3>
+  <style>
+    body {cursor: url('https://raw.githubusercontent.com/coob113/fancy-cursors/master/pixelated1.png'), auto !important;}
+    a, button, #mascot, #image-carousel, #sticker-hero, #nav, .merch-card, #community-image, li  {cursor: url('https://raw.githubusercontent.com/coob113/fancy-cursors/master/pixelated2.png') 23 0, auto !important;}
+    
+    /* Star animation styles */
+    #stars-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .star.small {
+      width: 2px;
+      height: 2px;
+    }
+    
+    .star.medium {
+      width: 3px;
+      height: 3px;
+    }
+    
+    .star.large {
+      width: 4px;
+      height: 4px;
+    }
+    
+    @keyframes twinkle {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 0.8; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.5); }
+    }
+    
+    .star.animate {
+      animation: twinkle 3s ease-in-out;
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      .star.large {
+        width: 3px;
+        height: 3px;
+      }
+      
+      .star.medium {
+        width: 2px;
+        height: 2px;
+      }
+      
+      .star.small {
+        width: 1.5px;
+        height: 1.5px;
+      }
+    }
+    #main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        </form>
+#main-nav.scrolled {
+  background: rgba(0, 0, 0, 0.98);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+/* Logo Styles */
+.nav-logo a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.logo-subtitle {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.65rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: -2px;
+}
+
+/* Menu Styles */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 400;
+  font-size: 0.9rem;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: white;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.5));
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* CTA Button */
+.nav-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nav-contact:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.nav-contact svg {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-contact:hover svg {
+  transform: scale(1.1);
+}
+
+/* Mobile Toggle */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 0.5rem;
+  gap: 4px;
+}
+
+.nav-toggle span {
+  width: 24px;
+  height: 2px;
+  background: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1px;
+}
+
+.nav-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 1rem;
+    height: 60px;
+  }
   
-        <!--End mc_embed_signup-->
-      </div>
+  .logo-text {
+    font-size: 1.3rem;
+  }
   
-      </div>
+  .logo-subtitle {
+    font-size: 0.6rem;
+  }
   
-      <div class="getinvolved-container">
-    <div class="list-title" id="involved-title">Get Involved</div>
-    <ul class="involved-links">
-      <li class="footer-linkholder"><a href="">Join Us</a></li>
-      <li class="footer-linkholder"><a href="">Events</a></li>
-      <li class="footer-linkholder"><a href="">Community</a></li>
-    </ul>
+  .nav-toggle {
+    display: flex;
+  }
+  
+  .nav-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    padding: 2rem 1rem;
+    transform: translateY(-100vh);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .nav-menu.active {
+    transform: translateY(0);
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .nav-link {
+    font-size: 1rem;
+    padding: 1rem 0;
+  }
+  
+  .nav-cta {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .nav-contact {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 0 1rem;
+  }
+  
+  .logo-text {
+    font-size: 1.2rem;
+  }
+  
+  .logo-subtitle {
+    font-size: 0.55rem;
+  }
+}
+
+/* Add padding to body to account for fixed nav */
+body {
+  padding-top: 70px;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px;
+  }
+}
+  </style>
+  
+  <body data-scroll-container>
+    <!-- Stars background -->
+    <div id="stars-container"></div>
+
+    <!-- Navigation Bar -->
+<nav id="main-nav">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <a href="/">
+        <span class="logo-text">OVAC</span>
+        <span class="logo-subtitle">October Visual Arts Club</span>
+      </a>
+    </div>
+    
+    <div class="nav-menu" id="nav-menu">
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link active">Home</a></li>
+        <li><a href="/meet-us" class="nav-link">Meet Us</a></li>
+        <li><a href="/gallery" class="nav-link">Gallery</a></li>
+        <li><a href="/bootcamp" class="nav-link">Bootcamp</a></li>
+      </ul>
+      
+      <div class="nav-cta">
+        <a href="tel:+201093561941" class="nav-contact">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Contact
+        </a>
       </div>
-      <div class="aboutus-container">
-    <div class="list-title" id="about-title">About Us</div>
-    <ul class="about-links">
-      <li class="footer-linkholder"><a href="">Shop</a></li>
-      <li class="footer-linkholder"><a href="">Mentors</a></li>
-      <li class="footer-linkholder"><a href="">Connect</a></li>
-    </ul>
+    </div>
+    
+    <div class="nav-toggle" id="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
+    <!--end of Navigation bar-->
+    <section id="welcome-section" class="container">
+      <div id="drawing-canvas"></div>
+      <h2 id="welcome">Welcome to</h2>
+      <div id="title"><span style="font-family: terminal-grotesque-open, sans-serif">Oct</span>ober <span style="font-family: terminal-grotesque-open, sans-serif">Vis</span>ual <span style="font-family: terminal-grotesque-open">A</span>rts <span style="font-family: terminal-grotesque-open">C</span>lub</div>
+      <p id="intro">October Visual Arts Club is a student run organization at STEM High School for Boys - 6th of October focused on raising students and holding events for those interested in .</p>
+      <p id="draw-hint">pssst... </br> try clicking and dragging to draw ;)</p>
+      </section>
+
+    <section id="event-section" class="container">
+      <p id="join">JOIN US <br> You are Welcome anytime</p>
+        <div id="svgContainer">
+        <svg id="svg1" width="0" height="0" >
+          <defs>
+              <!-- arrowhead marker definition -->
+              <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5"
+                  markerWidth="6" markerHeight="6"
+                  orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" style="stroke: none; fill: #fff;"/>
+              </marker>
+            </defs>  
+          <path
+              id="path1"
+              d="M0 0"             
+              stroke-width="3px"
+              marker-end="url(#arrow)"
+              style="stroke: #fff; fill:none; "/>
+              
+          <circle cx="0" cy="0" r="5" fill="#fff">
+            <animateMotion dur="5s" repeatCount="indefinite">
+              <mpath xlink:href="#path1"></mpath>
+            </animateMotion>   
+          </svg>
+    </div>
+
+    <div class="wilson">
+      <div id="mascot-face">:)</div>
+    <img id="mascot" class="rotate" src="wilson.svg">
+    <img id="mascot-bg" src="wilson-bg.svg">
   </div>
 
-    <!-- <div class="formfield">  
-    <form id="contact" action="" method="post"> -->
-      <!-- <fieldset>
-        <input placeholder="your-email@gmail.com_" type="text" tabindex="1" required autofocus>
-        </fieldset> -->
-    </form>
-  </div>
+      <div id="event-wrapper">
+        <p id="event-time"></p>
+        <p id="event-date">Whatsapp contact no.<br><a href="tel:+201093561941">+20 109 356 1941</a></p>
+        <h2 id="event-title">STEM High School for Boys - 6th of October</h2>
+        <p id="event-bio">A pioneering school that empowers students through hands-on STEM learning, research, and real-world problem-solving, shaping the next generation of innovators.</p>
+        <a href=""><button id="event-button">More Events →</button></a>
+      </div>
   </section>
+
+  <section id="who-section" class="container">
+
+    <h1 id="who" class="mbs">Who<br>we are</h1 >
+    <p id="who-bio">We are writers, designers, developers, artists, and creators at STEM High School for Boys - 6th of October. We strongly believe in including all in our pursuit for a better person and community.</p>
+
+  <div id="image-carousel" class="mbs">
+    <div id="slider-container">
+      <div class="slider">
+        <span><div class="img-container"><img src="/media/schoolo.jpg"></img></div></span>
+        <span><div class="img-container"><img src="/media/labo.png"></img></div></span>
+        <span><div class="img-container"><img src="/media/wesho.png"></img></div></span>
+        <span><div class="img-container"><img src="/media/banner-8.jpeg"></img></div></span>
+        <span><div class="img-container"><img src="/media/banner-5.jpg"></img></div></span>
+        <span><div class="img-container"><img src="/media/banner-6.jpg"></img></div></span>
+        <span><div class="img-container"><img src="/media/banner-1.jpg"></img></div></span>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+  
+ 
+  
+  <section class="container mbl" id="sticker-section">
+    <!-- <div id="stickerCanvas"></div> -->
+    <!-- <div id="matterCanvas"></div> -->
+    <!-- <div id="matterContainer">
+      
+    </div> -->
+     <div id="sticker-hero"></div>
+     <div id="callout-container">
+      <h2 id="callout1">we focus on</h2>
+      <div class="mbs" id="bigtext">building community</div>
+      <h2 id="callout2">centered around the future of</h2> 
+      <div class="mbs" id="bigtext2">design &#38; interaction</div>
+    </div>
+    
+
+    <div id="grid-col">
+      <div class="col-segment" id="segment1"></div>
+      <div class="col-segment" id="segment2"></div>
+      <div class="col-segment" id="segment3"></div>
+      <div class="col-segment" id="segment4"></div>
+      <div class="col-segment" id="segment5"></div>
+      <div class="col-segment" id="segment6"></div>
+      <div class="col-segment" id="segment7"></div>
+      <div class="col-segment" id="segment8"></div>
+      <div class="col-segment" id="segment9"></div>
+      <div class="col-segment" id="segment10"></div>
+      <div class="col-segment" id="segment11"></div>
+      <div class="col-segment" id="segment12"></div>
+    </div>
+
+    <div id="grid-rows" >
+      <div class="row-segment" id="row1" ></div>
+      <div class="row-segment" id="row2"></div>
+      <div class="row-segment" id="row3"></div>
+      <div class="row-segment" id="row4"></div>
+      <div class="row-segment" id="row5"></div>
+      <div class="row-segment" id="row6"></div>
+      <div class="row-segment" id="row7"></div>
+      <div class="row-segment" id="row8"></div>
+      <div class="row-segment" id="row9"></div>
+      <div class="row-segment" id="row10"></div>
+    </div>    
+  </section>
+
+  
+  <section id="mentor-section" class="container mbm">
+    
+    <!-- <img id="mentor-img" src="media/mentorship.png"> -->
+    <!-- <div class="mentor-container"> -->
+      <img src="media/mentor-shape.png" class="mentor-rotate" id="mentor-shape">
+      <img src="media/mentor-arrow.png" id="mentor-arrow">
+      <img src="media/mentee-shape.png" class="mentee-rotate" id="mentee-shape">
+      <img src="media/mentee-arrow.png" id="mentee-arrow">
+    <div id="mentor-bg-scene" class="mbs">
+        <img src="media/mentor-bg-1.png" data-depth="0.1" id="mentor-bg-1">
+        <img src="media/mentor-bg-2.png" data-depth="0.2" id="mentor-bg-2">
+    </div>
+    <script>
+        var scene = document.getElementById('mentor-bg-scene');
+        var parallaxInstance = new Parallax(scene);
+    </script>
+    <h1 id="mentor" class="mbs">Mentorship</h1>
+    <p id="mentor-desc">One of the main goals of New Media Club is to provide opportunities for mentorship, which strengthens our community and reinforces our bonds with our large and growing network of alumni. We create mentorship groups yearly so that our students can get to know those from different backgrounds and year levels.</p>
+    <p id="mentor-desc2">We also hold mentorship events occasionally and encourage groups to meet up and get to know their peers outside of the lab. Our goal is to have students build connections stronger than just classmates and teach the next generation of students our tips and tricks.</p> 
+    <a id="mentor-link" href="/mentorship.html">More About Our Mentorship Program →</a>
+    
+  </section>
+
+
+<section id="community-section" class="container mbm">
+  <!-- <h1 id="community" class="mbs">Community Highlight</h1> -->
+  <div id="community-image"></div>
+  <div id="community-desc">
+    <h4 id="community-label" class="mbs">ARTICLE</h3>
+    <h1 id="community-title" class="mbs">Creating a New New Media Club</h3>
+    <p class="mbs">In case you couldn't tell, we rebranded! Check out  deep dive into the personality and specifics of our new look and feel.</p>
+    <a href="articles/nmcrebrand.html"><button id="read-more-button">Read More →</button></a>
+  </div>
+  
+</section>
+
+
+<section id="merch-section" class="container mbm">
+  <!-- <img src="media/tshirt.png" id="merc-image"> -->
+<div id="merch-wrapper" class="mbm">
+    <h1 id="merch-label">Merch</h1>
+    <p id="merch-desc">Support our club through our web store. We offer stickers, t-shirts and other NMC swag for you to rep in the lab or the real world. Thank you!</p>
+</div>
+
+<a href="" target="_blank" rel="noopener noreferrer" id="card-container" class="mbm"> 
+    <span class="merch-card" id="merch-card-1">
+        <h1>01</h1>
+        <div class="card-bg"></div>
+        <h2>LinkedIn →</h2>
+        
+    </span>
+    <span class="merch-card" id="merch-card-2">
+      <h1>02</h1>
+      <div class="card-bg"></div>
+      <h2>Youtube →</h2>
+      
+    </span>
+    <span class="merch-card" id="merch-card-3">
+      <h1>03</h1>
+      <div class="card-bg"></div>
+      <h2>Instagram →</h2>
+    </a>
+    </span>
+  </a>
+  <a href="" target="_blank" rel="noopener noreferrer" id="merch-button"><button >Frame the <strong>Moment</strong> →</button></a>
+</section>
+
+<!-- Inject footer code -->
+<div id="footer-placeholder"></div>
+
+<script>
+$(function(){
+  $("#footer-placeholder").load("footer.html");
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.js" type="text/javascript"></script>
+<!-- <script src="./matter/matter-js-0.14.2/build/matter.js" type="text/javascript"></script> -->
+    <script src="/src/decomp.js" type="text/javascript"></script>
+    <script src="/src/decomp.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.15.0/matter.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.15.0/matter.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/ScrollTrigger.min.js"></script>
+    <script type="module" src="/src/scrollbooster.js"></script>
+    <script src="/src/main.js" type="module"></script>
+    <script src="/src/box.js" type="text/javascript"></script>
+    <script src="/src/star.js" type="text/javascript"></script>
+    <!-- <script src="/src/clickdrag.js" type="text/javascript"></script> -->
+    <script src="/src/sticker.js" defer type="text/javascript"></script>
+    <script src="/src/Line.js" defer type="text/javascript"></script>
+    <script src="/src/drawing.js" defer type="text/javascript"></script>
+    <script src="/src/svgDraw.js" type="text/javascript"></script>
+    <!-- <script src="/src/nav.js" type="text/javascript"></script> -->
+    <!-- <script src="/src/locomotive-scroll.min.js"></script> -->
+
+    <!-- Star Animation Script -->
+    <script>
+    // Star animation system
+    class StarField {
+      constructor() {
+        this.container = document.getElementById('stars-container');
+        this.stars = [];
+        this.maxStars = this.isMobile() ? 60 : 100;
+        this.init();
+      }
+
+      isMobile() {
+        return window.innerWidth <= 768;
+      }
+
+      init() {
+        this.createStars();
+        this.startAnimation();
+        
+        // Handle resize
+        window.addEventListener('resize', () => {
+          this.maxStars = this.isMobile() ? 15 : 25;
+          this.cleanup();
+          this.createStars();
+        });
+      }
+
+      createStars() {
+        for (let i = 0; i < this.maxStars; i++) {
+          setTimeout(() => {
+            this.createStar();
+          }, Math.random() * 5000);
+        }
+      }
+
+      createStar() {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Random size
+        const sizes = ['small', 'medium', 'large'];
+        const weights = [0.6, 0.3, 0.1]; // More small stars
+        const size = this.weightedRandom(sizes, weights);
+        star.classList.add(size);
+        
+        // Random position
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        star.style.left = x + 'px';
+        star.style.top = y + 'px';
+        
+        // Random opacity for variety
+        const baseOpacity = Math.random() * 0.3 + 0.3; // 0.3 to 0.6
+        star.style.setProperty('--base-opacity', baseOpacity);
+        
+        this.container.appendChild(star);
+        this.stars.push(star);
+        
+        // Start animation
+        requestAnimationFrame(() => {
+          star.classList.add('animate');
+        });
+        
+        // Remove after animation
+        setTimeout(() => {
+          this.removeStar(star);
+        }, 3000);
+      }
+
+      weightedRandom(items, weights) {
+        const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+        let random = Math.random() * totalWeight;
+        
+        for (let i = 0; i < items.length; i++) {
+          if (random < weights[i]) {
+            return items[i];
+          }
+          random -= weights[i];
+        }
+        
+        return items[items.length - 1];
+      }
+
+      removeStar(star) {
+        if (star && star.parentNode) {
+          star.parentNode.removeChild(star);
+          const index = this.stars.indexOf(star);
+          if (index > -1) {
+            this.stars.splice(index, 1);
+          }
+        }
+      }
+
+      startAnimation() {
+        const animate = () => {
+          // Create new stars periodically
+          if (Math.random() < 0.02 && this.stars.length < this.maxStars) {
+            this.createStar();
+          }
+          
+          requestAnimationFrame(animate);
+        };
+        
+        animate();
+      }
+
+      cleanup() {
+        this.stars.forEach(star => {
+          if (star && star.parentNode) {
+            star.parentNode.removeChild(star);
+          }
+        });
+        this.stars = [];
+      }
+    }
+
+    // Initialize stars when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      new StarField();
+    });
+
+    // Also initialize if DOM is already loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        new StarField();
+      });
+    } else {
+      new StarField();
+    }
+    </script>
+
+</body>
+</html>
